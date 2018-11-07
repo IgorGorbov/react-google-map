@@ -1,1 +1,1 @@
-# react-google-map
+# react-google-maps
