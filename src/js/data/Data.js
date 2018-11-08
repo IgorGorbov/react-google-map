@@ -7,8 +7,8 @@ const data = {
         "picture": "https://ihatetomatoes.net/demos/_rw/01-real-estate/tn_property01.jpg",
         "city": "Singer",
         "address": "914 Argyle Road",
-        "latitude": -33.944576,
-        "longitude": 151.25584,
+        "latitude": -33.944579,
+        "longitude": 151.25571,
         "bedrooms": 2,
         "bathrooms": 2,
         "carSpaces": 2

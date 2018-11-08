@@ -1,9 +1,12 @@
 import React from 'react';
+import jump from 'jump.js';
+
 import image from '../images/house-location-pin.svg';
 import data from './data/Data';
+import { easeInOutCubic } from './utils/Easing'
 
 import Card from './Card';
-
+import GoogleMap from './GoogleMap';
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -12,7 +15,24 @@ class App extends React.Component {
       properties: data.properties,
       activeProperty: data.properties[0],
     };
+
+    this.setAсtiveProperty = this.setAсtiveProperty.bind(this);
   }
+
+  setAсtiveProperty(property) {
+    const {index} = property;
+    this.setState({
+      activeProperty: property,
+    });
+
+    const target = `#card-${index}`;
+    jump(target, {
+      duration: 800,
+      easing: easeInOutCubic,
+  
+    });
+  }
+
   render() {
     const { properties, activeProperty } = this.state;
     return (
@@ -106,7 +126,11 @@ class App extends React.Component {
           </div>
         </div>
 
-        <GoogleMap properties={properties} />
+        <GoogleMap
+          properties={properties}
+          activeProperty={activeProperty}
+          setAсtiveProperty={this.setAсtiveProperty}
+        />
       </div>
     );
   }

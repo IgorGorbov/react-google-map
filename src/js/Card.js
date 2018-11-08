@@ -10,17 +10,18 @@ const Card = ({ property, activeProperty }) => {
     bedrooms,
     bathrooms,
     carSpaces,
+    index,
   } = property;
   return (
     <div
-      id="card-0"
+      id={`card-${index}`}
       className={`card col-sm-12 col-md-6 col-lg-4 
         ${property === activeProperty ? 'is-active' : ''}`}
     >
       <img src={picture} alt="Singer" />
       <p className="price">${price}</p>
       <div className="details">
-        <span className="index">1</span>
+        <span className="index">{index + 1}</span>
         <p className="location">
           {city}
           <br />
