@@ -3,7 +3,7 @@ import jump from 'jump.js';
 
 import image from '../images/house-location-pin.svg';
 import data from './data/Data';
-import { easeInOutCubic } from './utils/Easing'
+import { easeInOutCubic } from './utils/Easing';
 
 import Card from './Card';
 import GoogleMap from './GoogleMap';
@@ -19,18 +19,19 @@ class App extends React.Component {
     this.setAсtiveProperty = this.setAсtiveProperty.bind(this);
   }
 
-  setAсtiveProperty(property) {
-    const {index} = property;
+  setAсtiveProperty(property, scroll = true) {
+    const { index } = property;
     this.setState({
       activeProperty: property,
     });
 
-    const target = `#card-${index}`;
-    jump(target, {
-      duration: 800,
-      easing: easeInOutCubic,
-  
-    });
+    if (scroll) {
+      const target = `#card-${index}`;
+      jump(target, {
+        duration: 800,
+        easing: easeInOutCubic,
+      });
+    }
   }
 
   render() {
@@ -119,6 +120,7 @@ class App extends React.Component {
                     key={prop._id}
                     property={prop}
                     activeProperty={activeProperty}
+                    setAсtiveProperty={this.setAсtiveProperty}
                   />
                 );
               })}

@@ -29,6 +29,28 @@ export default class GoogleMap extends Component {
     this.createMarkers(properties);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { activeProperty } = nextProps;
+    const { index } = activeProperty;
+
+    this.hideAllMarkers();
+
+    this.showIW(index);
+  }
+
+  showIW(index) {
+    const { markers } = this.state;
+    markers[index] && markers[index].iw.open(this.map, markers[index]);
+  }
+
+  hideAllMarkers() {
+    const { markers } = this.state;
+
+    markers.forEach(marker => {
+      marker.iw.close();
+    });
+  }
+
   createMarkers(properties) {
     const { setAсtiveProperty, activeProperty } = this.props;
     const activePropertyIndex = activeProperty.index;
@@ -59,18 +81,14 @@ export default class GoogleMap extends Component {
 
       this.marker.iw = iw;
 
-      this.marker.addListener('click', function() {
-
-        markers.forEach(marker => {
-          marker.iw.close();
-        })
-        setAсtiveProperty(prop);
+      this.marker.addListener('click', () => {
+        this.hideAllMarkers();
+        setAсtiveProperty(prop, true);
       });
 
       markers.push(this.marker);
 
-      markers[activePropertyIndex] &&
-        markers[activePropertyIndex].iw.open(this.map, markers[activePropertyIndex]);
+      this.showIW(activePropertyIndex);
     });
   }
 
