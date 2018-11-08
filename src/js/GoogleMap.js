@@ -5,7 +5,7 @@ export default class GoogleMap extends Component {
   static propTypes = {
     properties: PropTypes.array.isRequired,
     activeProperty: PropTypes.object.isRequired,
-    // setAсtiveProperty: PropTypes.func.isRequired,
+    setActiveProperty: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -33,9 +33,10 @@ export default class GoogleMap extends Component {
     const { activeProperty } = nextProps;
     const { index } = activeProperty;
 
-    this.hideAllMarkers();
-
-    this.showIW(index);
+    if (index !== this.props.activeProperty.index) {
+      this.hideAllMarkers();
+      this.showIW(index);
+    }
   }
 
   showIW(index) {
@@ -52,7 +53,7 @@ export default class GoogleMap extends Component {
   }
 
   createMarkers(properties) {
-    const { setAсtiveProperty, activeProperty } = this.props;
+    const { setActiveProperty, activeProperty } = this.props;
     const activePropertyIndex = activeProperty.index;
     const { markers } = this.state;
 
@@ -83,7 +84,7 @@ export default class GoogleMap extends Component {
 
       this.marker.addListener('click', () => {
         this.hideAllMarkers();
-        setAсtiveProperty(prop, true);
+        setActiveProperty(prop, true);
       });
 
       markers.push(this.marker);

@@ -102,7 +102,7 @@ header {
     background-color: #fff;
     z-index: 3;
     text-align: left;
-    padding: 32px 130px 30px 30px;
+    padding: 22px 45px 40px 20px;
     .filterBox {
         margin: 0 20px 20px 0;
         display: inline-block;
@@ -110,16 +110,16 @@ header {
             display: block;
         }
         &.filterFrom {
-            margin-right: 10px;
+            margin-right: 20px;
         }
     }
     .btn-filter {
         position: absolute;
-        right: 20px;
-        top: 20px;
+        right: 30px;
+        top: 40px;
         width: auto;
         @media (min-width: 992px) {
-            top: 50px;
+            top: 40px;
             width: 80px;
         }
     }
@@ -213,6 +213,7 @@ html, body {
         list-style: none;
         padding: 0;
         margin: 0;
+        text-align: left;
         li {
             padding-left: 24px;
             margin-right: 10px;
