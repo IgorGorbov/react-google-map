@@ -6,6 +6,8 @@ export default class GoogleMap extends Component {
     properties: PropTypes.array.isRequired,
     activeProperty: PropTypes.object.isRequired,
     setActiveProperty: PropTypes.func.isRequired,
+    filteredProperties: PropTypes.array.isRequired,
+    isFiltering: PropTypes.bool.isRequired,
   };
 
   constructor(props) {
@@ -21,12 +23,34 @@ export default class GoogleMap extends Component {
     const { latitude, longitude } = activeProperty;
 
     this.map = new google.maps.Map(this.refs.map, {
-      center: { lat: latitude, lng: longitude },
+      center: {
+        lat: latitude,
+        lng: longitude,
+      },
       mapTypeControl: false,
       zoom: 16,
     });
 
     this.createMarkers(properties);
+  }
+
+  componentDidUpdate() {
+    const { filteredProperties, isFiltering } = this.props;
+    const { markers } = this.state;
+
+    markers.forEach(marker => {
+      const { property } = marker;
+
+      if (isFiltering) {
+        if (filteredProperties.includes(property)) {
+          markers[property.index].setVisible(true);
+        } else {
+          markers[property.index].setVisible(false);
+        }
+      } else {
+        markers[property.index].setVisible(true);
+      }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -57,10 +81,13 @@ export default class GoogleMap extends Component {
     const activePropertyIndex = activeProperty.index;
     const { markers } = this.state;
 
-    properties.map(prop => {
-      const { latitude, longitude, index, address } = prop;
+    properties.map(property => {
+      const { latitude, longitude, index, address } = property;
       this.marker = new google.maps.Marker({
-        position: { lat: latitude, lng: longitude },
+        position: {
+          lat: latitude,
+          lng: longitude,
+        },
         map: this.map,
         label: {
           color: 'orangered',
@@ -74,6 +101,7 @@ export default class GoogleMap extends Component {
           origin: new google.maps.Point(0, -15),
           anchor: new google.maps.Point(0, 0),
         },
+        property,
       });
 
       const iw = new google.maps.InfoWindow({
@@ -84,7 +112,7 @@ export default class GoogleMap extends Component {
 
       this.marker.addListener('click', () => {
         this.hideAllMarkers();
-        setActiveProperty(prop, true);
+        setActiveProperty(property, true);
       });
 
       markers.push(this.marker);

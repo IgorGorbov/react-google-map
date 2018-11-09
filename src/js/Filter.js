@@ -5,12 +5,13 @@ export default class Filter extends Component {
   static propTypes = {
     toggleFilter: PropTypes.func.isRequired,
     handleFilterChange: PropTypes.func.isRequired,
+    clearFilter: PropTypes.func.isRequired,
   };
 
   render() {
-    const { toggleFilter, handleFilterChange } = this.props;
+    const { toggleFilter, handleFilterChange, clearFilter } = this.props;
     return (
-      <form className="filter">
+      <form ref={input => (this.form = input)} className="filter">
         <div className="filterBox">
           <label htmlFor="filterBedrooms">Bedrooms</label>
           <select
@@ -26,7 +27,11 @@ export default class Filter extends Component {
         </div>
         <div className="filterBox">
           <label htmlFor="filterBathrooms">Bathrooms</label>
-          <select id="filterBathrooms" name="filterBathrooms">
+          <select
+            id="filterBathrooms"
+            name="filterBathrooms"
+            onChange={handleFilterChange}
+          >
             <option value="any">Any</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -34,7 +39,11 @@ export default class Filter extends Component {
         </div>
         <div className="filterBox">
           <label htmlFor="filterCars">Car Spaces</label>
-          <select id="filterCars" name="filterCars">
+          <select
+            id="filterCars"
+            name="filterCars"
+            onChange={handleFilterChange}
+          >
             <option value="any">Any</option>
             <option value="0">0</option>
             <option value="1">1</option>
@@ -73,7 +82,9 @@ export default class Filter extends Component {
         </div>
         <div className="filterBox">
           <label>&nbsp;</label>
-          <button className="btn-clear">Clear</button>
+          <button className="btn-clear" onClick={e => clearFilter(e, this.form)}>
+            Clear
+          </button>
         </div>
         <button className="btn-filter" onClick={toggleFilter}>
           <strong>X</strong>
