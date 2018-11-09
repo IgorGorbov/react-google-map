@@ -57,7 +57,10 @@ export default class GoogleMap extends Component {
     const { activeProperty } = nextProps;
     const { index } = activeProperty;
 
-    if (index !== this.props.activeProperty.index) {
+    if (
+      this.props.activeProperty.length &&
+      index !== this.props.activeProperty.index
+    ) {
       this.hideAllMarkers();
       this.showIW(index);
     }

@@ -1,6 +1,7 @@
 import React from 'react';
 import jump from 'jump.js';
 
+import ImagLocation from '../images/location-map';
 import data from './data/Data';
 import { easeInOutCubic } from './utils/Easing';
 
@@ -96,7 +97,7 @@ class App extends React.Component {
 
     this.setState({
       filteredProperties: getFilteredProperties(properties),
-      activeProperty: getFilteredProperties(properties)[0],
+      activeProperty: getFilteredProperties(properties)[0] || properties[0],
       isFiltering,
     });
   }
@@ -111,9 +112,9 @@ class App extends React.Component {
       filterCars: 'any',
       filteredProperties: [],
       isFiltering: false,
-    })
+    });
 
-    form.reset()
+    form.reset();
   }
 
   render() {
@@ -125,8 +126,8 @@ class App extends React.Component {
       isFiltering,
     } = this.state;
 
-  const propertiesList = isFiltering ? filteredProperties : properties;
-  
+    const propertiesList = isFiltering ? filteredProperties : properties;
+
     return (
       <div>
         <div className="listings">
@@ -137,7 +138,10 @@ class App extends React.Component {
             handleFilterChange={this.handleFilterChange}
           />
           <div className="cards container">
-            <div className="cards-list row ">
+            <div
+              className={`cards-list row 
+              ${propertiesList.length ? '' : 'is-empty'}`}
+            >
               {propertiesList.map(prop => {
                 return (
                   <Card
@@ -148,6 +152,11 @@ class App extends React.Component {
                   />
                 );
               })}
+              {isFiltering && propertiesList.length === 0 && (
+                <p className="warning">
+                  <img src={ImagLocation} /> No properties were found
+                </p>
+              )}
             </div>
           </div>
         </div>
