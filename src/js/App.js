@@ -1,7 +1,7 @@
 import React from 'react';
 import jump from 'jump.js';
 
-import ImagLocation from '../images/location-map';
+import ImagLocation from '../images/location-map.svg';
 import data from './data/Data';
 import { easeInOutCubic } from './utils/Easing';
 
@@ -20,6 +20,9 @@ class App extends React.Component {
       filterBedrooms: 'any',
       filterBathrooms: 'any',
       filterCars: 'any',
+      filterSort: 'any',
+      priceFrom: 500000,
+      priceTo: 1000000,
       filteredProperties: [],
       isFiltering: false,
     };
@@ -73,24 +76,42 @@ class App extends React.Component {
       filterBedrooms,
       filterBathrooms,
       filterCars,
+      filterSort,
+      priceFrom,
+      priceTo,
     } = this.state;
     const isFiltering =
       filterBedrooms !== 'any' ||
       filterBathrooms !== 'any' ||
-      filterCars !== 'any';
+      filterCars !== 'any' ||
+      filterSort !== 'any' ||
+      priceFrom !== '0' ||
+      priceTo !== '1000001';
 
     const getFilteredProperties = properties => {
       const filteredProperties = [];
       properties.map(property => {
-        const { bedrooms, bathrooms, carSpaces } = property;
+        const { bedrooms, bathrooms, carSpaces, price } = property;
         const match =
           (bedrooms === parseInt(filterBedrooms) || filterBedrooms === 'any') &&
           (bathrooms === parseInt(filterBathrooms) ||
             filterBathrooms === 'any') &&
-          (carSpaces === parseInt(filterCars) || filterCars === 'any');
+          (carSpaces === parseInt(filterCars) || filterCars === 'any') &&
+          (price >= priceFrom && price <= priceTo);
 
         match && filteredProperties.push(property);
       });
+
+      switch (filterSort) {
+        case '0':
+          filteredProperties.sort((a, b) => a.price - b.price);
+          break;
+        case '1':
+          filteredProperties.sort((a, b) => b.price - a.price);
+          break;
+        default:
+          break;
+      }
 
       return filteredProperties;
     };
@@ -106,10 +127,14 @@ class App extends React.Component {
     e.preventDefault();
 
     this.setState({
+      properties: this.state.properties.sort((a, b) => a.index - b.index),
       activeProperty: this.state.properties[0],
       filterBedrooms: 'any',
       filterBathrooms: 'any',
       filterCars: 'any',
+      filterSort: 'any',
+      priceFrom: 500000,
+      priceTo: 1000000,
       filteredProperties: [],
       isFiltering: false,
     });
@@ -124,6 +149,7 @@ class App extends React.Component {
       filterIsVisible,
       filteredProperties,
       isFiltering,
+      filterSort,
     } = this.state;
 
     const propertiesList = isFiltering ? filteredProperties : properties;

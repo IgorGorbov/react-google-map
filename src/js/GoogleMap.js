@@ -54,13 +54,12 @@ export default class GoogleMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { activeProperty } = nextProps;
+    const { activeProperty, isFiltering } = nextProps;
     const { index } = activeProperty;
 
-    if (
-      this.props.activeProperty.length &&
-      index !== this.props.activeProperty.index
-    ) {
+    if (isFiltering && this.props.activeProperty.length === 0) {
+      this.hideAllMarkers();
+    } else if (index !== this.props.activeProperty.index) {
       this.hideAllMarkers();
       this.showIW(index);
     }
